@@ -1,0 +1,12 @@
+services:
+    grossum_static_page.admin.static_page:
+        class: %grossum_static_page.static_page.admin.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: group.main, label: "grossum_static_page.admin.static_page.plural_label" }
+        arguments:
+            - ~
+            - %grossum_static_page.entity.static_page.class%
+            - GrossumStaticPageBundle:StaticPageAdmin
+        calls:
+            - [setTemplates, [{list: "GrossumStaticPageBundle:StaticPageAdmin:list.html.twig"}]]
+            - [setManager, ["@grossum_static_page.static_page.manager"]]

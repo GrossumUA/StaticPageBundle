@@ -1,0 +1,52 @@
+Grossum\StaticPageBundle\Entity\BaseStaticPage:
+    type: mappedSuperclass
+    gedmo:
+        tree:
+            type: nested
+    fields:
+        title:
+            type: string
+            length: 255
+        slug:
+            type: string
+            length: 255
+            gedmo:
+                slug:
+                    separator: -
+                    style: lower
+                    fields:
+                        - title
+        body:
+            type: text
+            nullable: true
+        enabled:
+            type: boolean
+        lft:
+            type: integer
+            gedmo:
+                - treeLeft
+        rgt:
+            type: integer
+            gedmo:
+                - treeRight
+        lvl:
+            type: integer
+            gedmo:
+                - treeLevel
+        position:
+            type: integer
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    indexes:
+        search_idx:
+            columns: slug

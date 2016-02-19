@@ -1,0 +1,34 @@
+Application\Grossum\StaticPageBundle\Entity\StaticPage:
+    type: entity
+    table: static_page
+    repositoryClass: Application\Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+#    @todo: We wrote associations here because Gedmo-Extension can see associations only in config-file - it doesn't use
+#           Doctrtine metadata. Todo: remove when we should can use Doctrtine metadata
+    manyToOne:
+        root:
+            targetEntity: Application\Grossum\StaticPageBundle\Entity\StaticPage
+            nullable: true
+            joinColumn:
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeRoot
+        parent:
+            targetEntity: Application\Grossum\StaticPageBundle\Entity\StaticPage
+            inversedBy: children
+            joinColumn:
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeParent
+    oneToMany:
+        children:
+            targetEntity: Application\Grossum\StaticPageBundle\Entity\StaticPage
+            mappedBy: parent
+            orderBy:
+                lft: ASC

@@ -1,0 +1,16 @@
+parameters:
+    grossum_static_page_tree_depth: 32
+
+services:
+    grossum_static_page.static_page.manager:
+        class: %grossum_static_page.static_page.manager.class%
+        arguments:
+            - @grossum_core.entity_manager
+            - %grossum_static_page.entity.static_page.class%
+
+    grossum_static_page.form.type.static_page_selector:
+        class: Grossum\StaticPageBundle\Form\Type\StaticPageSelectorType
+        arguments:
+            - "@grossum_static_page.static_page.manager"
+        tags:
+            - { name: form.type, alias: grossum_static_page_static_page_selector }

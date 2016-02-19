@@ -1,0 +1,8 @@
+Grossum\StaticPageBundle\Entity\StaticPage:
+    properties:
+        title:
+            - NotBlank: ~
+        position:
+            - NotBlank: ~
+            - GreaterThanOrEqual:
+                value: 1
