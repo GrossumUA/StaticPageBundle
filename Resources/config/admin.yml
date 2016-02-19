@@ -1,0 +1,9 @@
+services:
+    grossum_static_page.admin.static_page:
+        class: %grossum_static_page.static_page.admin.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: group.main, label: "Static pages" }
+        arguments:
+            - ~
+            - %grossum_static_page.static_page.entity.class%
+            - ~

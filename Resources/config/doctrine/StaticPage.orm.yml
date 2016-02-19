@@ -1,0 +1,38 @@
+Grossum\StaticPageBundle\Entity\StaticPage:
+    type: mappedSuperclass
+    repositoryClass: Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository
+    fields:
+        title:
+            type: string
+            length: 255
+        slug:
+            type: string
+            length: 255
+            gedmo:
+                slug:
+                    separator: _
+                    style: lower
+                    fields:
+                        - title
+        body:
+            type: text
+            nullable: true
+        enabled:
+            type: boolean
+        position:
+            type: integer
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    indexes:
+        search_idx:
+            columns: slug

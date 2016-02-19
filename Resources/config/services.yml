@@ -1,0 +1,5 @@
+services:
+    grossum_static_page.static_page.manager:
+        class: %grossum_static_page.static_page.manager.class%
+        arguments:
+            - @grossum_core.entity_manager
