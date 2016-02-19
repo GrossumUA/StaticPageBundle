@@ -3,6 +3,7 @@
 namespace Grossum\StaticPageBundle\Entity\EntityManager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
 use Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository;
 
