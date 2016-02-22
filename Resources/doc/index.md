@@ -47,3 +47,5 @@ stof_doctrine_extensions:
             sluggable:     true
             timestampable: true
 ```
+
+### Configure [CoopTilleulsCKEditorSonataMediaBundle](https://github.com/coopTilleuls/CoopTilleulsCKEditorSonataMediaBundle/blob/master/Resources/doc/install.md)
