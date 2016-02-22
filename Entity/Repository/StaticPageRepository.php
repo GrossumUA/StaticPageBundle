@@ -13,9 +13,6 @@ class StaticPageRepository extends EntityRepository
      */
     public function findAllEnabled()
     {
-        return $this
-            ->_em
-            ->getRepository('GrossumStaticPageBundle:StaticPage')
-            ->findBy(['enabled' => true]);
+        return $this->findBy(['enabled' => true]);
     }
 }
