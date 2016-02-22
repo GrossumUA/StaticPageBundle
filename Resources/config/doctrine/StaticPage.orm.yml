@@ -1,6 +1,12 @@
 Grossum\StaticPageBundle\Entity\StaticPage:
-    type: mappedSuperclass
+    type: entity
+    table: grossum_static_page
     repositoryClass: Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
     fields:
         title:
             type: string
@@ -33,6 +39,14 @@ Grossum\StaticPageBundle\Entity\StaticPage:
             gedmo:
                 timestampable:
                     on: update
+    oneToMany:
+        children:
+            targetEntity: Grossum\StaticPageBundle\Entity\StaticPage
+            mappedBy: parent
+    manyToOne:
+        parent:
+            targetEntity: Grossum\StaticPageBundle\Entity\StaticPage
+            inversedBy: children
     indexes:
         search_idx:
             columns: slug

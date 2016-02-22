@@ -22,6 +22,7 @@ class StaticPageAdmin extends Admin
         $formMapper
             ->add('enabled')
             ->add('title', TextType::class)
+            ->add('parent')
             ->add(
                 'slug',
                 TextType::class,
@@ -55,6 +56,24 @@ class StaticPageAdmin extends Admin
         $listMapper
             ->addIdentifier('title')
             ->addIdentifier('slug')
-            ->add('position');
+            ->add(
+                'parent.title',
+                null,
+                [
+                    'label' => 'Parent'
+                ]
+            )
+            ->add('position')
+            ->add(
+                '_action',
+                'actions',
+                [
+                    'actions' => [
+                        'edit'   => [],
+                        'delete' => []
+                    ],
+                    'label' => 'Actions'
+                ]
+            );
     }
 }

@@ -3,6 +3,8 @@
 namespace Grossum\StaticPageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class StaticPage
 {
@@ -48,8 +50,20 @@ class StaticPage
      */
     private $updatedAt;
 
+    /**
+     * @var Collection|StaticPage[]
+     */
+    private $children;
+
+    /**
+     * @var StaticPage
+     */
+    private $parent;
+
     public function __construct()
     {
+        $this->children = new ArrayCollection();
+
         $this->position = static::POSITION_DEFAULT;
     }
 
@@ -199,6 +213,54 @@ class StaticPage
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param StaticPage $child
+     *
+     * @return $this
+     */
+    public function addChild(StaticPage $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * @param StaticPage $child
+     */
+    public function removeChild(StaticPage $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * @return Collection|StaticPage[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param StaticPage $parent
+     *
+     * @return $this
+     */
+    public function setParent(StaticPage $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return StaticPage
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
     /**
