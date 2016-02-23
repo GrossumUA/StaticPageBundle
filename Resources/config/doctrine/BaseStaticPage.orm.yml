@@ -1,12 +1,5 @@
-Grossum\StaticPageBundle\Entity\StaticPage:
-    type: entity
-    table: grossum_static_page
-    repositoryClass: Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository
-    id:
-        id:
-            type: integer
-            generator:
-                strategy: AUTO
+Grossum\StaticPageBundle\Entity\BaseStaticPage:
+    type: mappedSuperclass
     fields:
         title:
             type: string
@@ -16,7 +9,7 @@ Grossum\StaticPageBundle\Entity\StaticPage:
             length: 255
             gedmo:
                 slug:
-                    separator: _
+                    separator: -
                     style: lower
                     fields:
                         - title
@@ -39,14 +32,6 @@ Grossum\StaticPageBundle\Entity\StaticPage:
             gedmo:
                 timestampable:
                     on: update
-    oneToMany:
-        children:
-            targetEntity: Grossum\StaticPageBundle\Entity\StaticPage
-            mappedBy: parent
-    manyToOne:
-        parent:
-            targetEntity: Grossum\StaticPageBundle\Entity\StaticPage
-            inversedBy: children
     indexes:
         search_idx:
             columns: slug

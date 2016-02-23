@@ -2,9 +2,6 @@
 
 namespace Grossum\StaticPageBundle\Admin;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,24 +17,50 @@ class StaticPageAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('enabled')
-            ->add('title', TextType::class)
-            ->add('parent')
+            ->add(
+                'enabled',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.enabled',
+                ]
+            )
+            ->add(
+                'title',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.title',
+                ]
+            )
+            ->add(
+                'parent',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.parent',
+                ]
+            )
             ->add(
                 'slug',
-                TextType::class,
+                null,
                 [
-                    'required' => false
+                    'required' => false,
+                    'label'    => 'grossum_static_page.admin.static_page.slug',
                 ]
             )
             ->add(
                 'body',
                 CKEditorType::class,
                 [
-                    'required' => false
+                    'required' => false,
+                    'label'    => 'grossum_static_page.admin.static_page.body',
                 ]
             )
-            ->add('position', IntegerType::class);
+            ->add(
+                'position',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.position',
+                ]
+            );
     }
 
     /**
@@ -54,16 +77,35 @@ class StaticPageAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title')
-            ->addIdentifier('slug')
+            ->addIdentifier(
+                'title',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.title',
+                ]
+            )
+            ->addIdentifier(
+                'slug',
+                null,
+                [
+                    'required' => false,
+                    'label'    => 'grossum_static_page.admin.static_page.slug',
+                ]
+            )
             ->add(
                 'parent.title',
                 null,
                 [
-                    'label' => 'Parent'
+                    'label' => 'grossum_static_page.admin.static_page.parent',
                 ]
             )
-            ->add('position')
+            ->add(
+                'position',
+                null,
+                [
+                    'label' => 'grossum_static_page.admin.static_page.position',
+                ]
+            )
             ->add(
                 '_action',
                 'actions',
@@ -72,7 +114,6 @@ class StaticPageAdmin extends Admin
                         'edit'   => [],
                         'delete' => []
                     ],
-                    'label' => 'Actions'
                 ]
             );
     }

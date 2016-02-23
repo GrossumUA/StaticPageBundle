@@ -15,6 +15,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('grossum_static_page');
 
+        $rootNode
+            ->children()
+                ->arrayNode('class')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('static_page')->defaultValue('Application\\Grossum\\StaticPageBundle\\Entity\\StaticPage')->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

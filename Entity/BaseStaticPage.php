@@ -6,73 +6,59 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class StaticPage
+abstract class BaseStaticPage
 {
     const POSITION_DEFAULT = 1;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $id;
+    protected $title;
 
     /**
      * @var string
      */
-    private $title;
+    protected $slug;
 
     /**
      * @var string
      */
-    private $slug;
-
-    /**
-     * @var string
-     */
-    private $body;
+    protected $body;
 
     /**
      * @var boolean
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @var integer
      */
-    private $position;
+    protected $position;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
-     * @var Collection|StaticPage[]
+     * @var Collection|BaseStaticPage[]
      */
-    private $children;
+    protected $children;
 
     /**
-     * @var StaticPage
+     * @var BaseStaticPage
      */
-    private $parent;
+    protected $parent;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
-
         $this->position = static::POSITION_DEFAULT;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -216,11 +202,11 @@ class StaticPage
     }
 
     /**
-     * @param StaticPage $child
+     * @param BaseStaticPage $child
      *
      * @return $this
      */
-    public function addChild(StaticPage $child)
+    public function addChild(BaseStaticPage $child)
     {
         $this->children[] = $child;
 
@@ -228,15 +214,15 @@ class StaticPage
     }
 
     /**
-     * @param StaticPage $child
+     * @param BaseStaticPage $child
      */
-    public function removeChild(StaticPage $child)
+    public function removeChild(BaseStaticPage $child)
     {
         $this->children->removeElement($child);
     }
 
     /**
-     * @return Collection|StaticPage[]
+     * @return Collection|BaseStaticPage[]
      */
     public function getChildren()
     {
@@ -244,11 +230,11 @@ class StaticPage
     }
 
     /**
-     * @param StaticPage $parent
+     * @param BaseStaticPage $parent
      *
      * @return $this
      */
-    public function setParent(StaticPage $parent = null)
+    public function setParent(BaseStaticPage $parent = null)
     {
         $this->parent = $parent;
 
@@ -256,7 +242,7 @@ class StaticPage
     }
 
     /**
-     * @return StaticPage
+     * @return BaseStaticPage
      */
     public function getParent()
     {
