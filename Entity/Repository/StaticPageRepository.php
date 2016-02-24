@@ -4,12 +4,12 @@ namespace Grossum\StaticPageBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-use Grossum\StaticPageBundle\Entity\StaticPage;
+use Grossum\StaticPageBundle\Entity\BaseStaticPage;
 
 class StaticPageRepository extends EntityRepository
 {
     /**
-     * @return StaticPage[]
+     * @return BaseStaticPage[]
      */
     public function findAllEnabled()
     {

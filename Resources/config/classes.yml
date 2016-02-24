@@ -1,4 +1,3 @@
 parameters:
     grossum_static_page.static_page.admin.class:   Grossum\StaticPageBundle\Admin\StaticPageAdmin
-    grossum_static_page.static_page.entity.class:  Grossum\StaticPageBundle\Entity\StaticPage
     grossum_static_page.static_page.manager.class: Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager

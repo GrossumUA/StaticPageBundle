@@ -3,4 +3,4 @@ services:
         class: %grossum_static_page.static_page.manager.class%
         arguments:
             - @grossum_core.entity_manager
-            - %grossum_static_page.static_page.entity.class%
+            - %grossum_static_page.entity.static_page.class%
