@@ -20,7 +20,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('class')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('static_page')->defaultValue('Application\\Grossum\\StaticPageBundle\\Entity\\StaticPage')->end()
+                        ->scalarNode('static_page')
+                            ->defaultValue('Application\\Grossum\\StaticPageBundle\\Entity\\StaticPage')
+                        ->end()
                     ->end()
                 ->end()
             ->end();
