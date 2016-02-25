@@ -25,6 +25,11 @@
         "tilleuls/ckeditor-sonata-media-bundle": "^1.0",
         "grossum/core-bundle": "~1"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "*"
+    },
     "autoload" : {
         "psr-0" : {
             "Grossum\\StaticPageBundle" : ""
