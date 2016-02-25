@@ -23,7 +23,7 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "egeloen/ckeditor-bundle": "^4.0",
         "tilleuls/ckeditor-sonata-media-bundle": "^1.0",
-        "grossum/core-bundle": "~1"
+        "grossum/core-bundle": "0.1.*@dev"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "2.*",
