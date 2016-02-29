@@ -1,11 +1,11 @@
 grossum_static_page:
     admin:
         static_page:
-            label       : 'Static page'
+            label:        'Static page'
             plural_label: 'Static pages'
-            enabled     : 'Enabled'
-            title       : 'Title'
-            parent      : 'Parent'
-            slug        : 'Slug'
-            body        : 'Body'
-            position    : 'Position'
+            enabled:      'Enabled'
+            title:        'Title'
+            parent:       'Parent'
+            slug:         'Slug'
+            body:         'Body'
+            position:     'Position'

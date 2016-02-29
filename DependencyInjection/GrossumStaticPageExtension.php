@@ -30,7 +30,7 @@ class GrossumStaticPageExtension extends Extension
 
         $container->setParameter('grossum_static_page.entity.static_page.class', $config['class']['static_page']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('admin.yml');
         $loader->load('classes.yml');
         $loader->load('services.yml');
