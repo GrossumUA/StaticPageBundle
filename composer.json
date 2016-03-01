@@ -1,0 +1,44 @@
+{
+    "name" : "grossum/static-page-bundle",
+    "description" : "This bundle added static page entity with fields: title, slug, description, enabled, position, parent, children, createdAt and updatedAt",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Alexey Chernoivan",
+        "email" : "achernoivan@grossum.com"
+    }],
+    "keywords" : [
+        "static page bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.5.2",
+        "symfony/framework-bundle": "~2.1",
+        "sonata-project/core-bundle": "~2.2",
+        "sonata-project/admin-bundle": "~2.2",
+        "sonata-project/media-bundle": "^2.3",
+        "knplabs/knp-menu-bundle": "~2.0",
+        "gedmo/doctrine-extensions": "^2.4",
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "egeloen/ckeditor-bundle": "^4.0",
+        "tilleuls/ckeditor-sonata-media-bundle": "^1.0",
+        "grossum/core-bundle": "0.1.*@dev"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "*"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Grossum\\StaticPageBundle" : ""
+        }
+    },
+    "target-dir" : "Grossum/StaticPageBundle",
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "0.1-dev"
+        }
+    }
+}

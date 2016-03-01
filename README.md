@@ -34,6 +34,8 @@ class AppKernel extends Kernel
             // ...
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new CoopTilleuls\Bundle\CKEditorSonataMediaBundle\CoopTilleulsCKEditorSonataMediaBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Grossum\StaticPageBundle\GrossumStaticPageBundle(),
         );
 

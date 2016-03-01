@@ -1,0 +1,9 @@
+Application\Grossum\StaticPageBundle\Entity\StaticPage:
+    type: entity
+    table: static_page
+    repositoryClass: Application\Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
