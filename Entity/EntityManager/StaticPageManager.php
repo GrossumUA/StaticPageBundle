@@ -5,7 +5,7 @@ namespace Grossum\StaticPageBundle\Entity\EntityManager;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
-use Grossum\StaticPageBundle\Entity\Repository\StaticPageRepository;
+use Grossum\StaticPageBundle\Entity\Repository\BaseStaticPageRepository;
 
 class StaticPageManager
 {
@@ -22,7 +22,7 @@ class StaticPageManager
     private $objectManager;
 
     /**
-     * @var StaticPageRepository
+     * @var BaseStaticPageRepository
      */
     private $repository;
 
@@ -37,7 +37,7 @@ class StaticPageManager
     }
 
     /**
-     * @return StaticPageRepository
+     * @return BaseStaticPageRepository
      */
     public function getRepository()
     {
