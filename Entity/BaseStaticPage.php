@@ -354,6 +354,6 @@ abstract class BaseStaticPage
      */
     public function __toString()
     {
-        return $this->getTitle() ?: "Static page";
+        return $this->getTitle() ?: 'Static page';
     }
 }

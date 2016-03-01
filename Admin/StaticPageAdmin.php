@@ -107,7 +107,7 @@ class StaticPageAdmin extends Admin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('enabled');
+        $datagridMapper->add('enabled', null, ['label' => 'grossum_static_page.admin.static_page.enabled']);
     }
 
     /**

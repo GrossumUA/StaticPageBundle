@@ -13,6 +13,14 @@ use Sonata\EasyExtendsBundle\Mapper\DoctrineCollector;
 class GrossumStaticPageExtension extends Extension
 {
     /**
+     * @var array
+     */
+    protected $requiredBundles = [
+        'GrossumCoreBundle',
+        'IvoryCKEditorBundle'
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -22,69 +30,17 @@ class GrossumStaticPageExtension extends Extension
 
         $registeredBundles = $container->getParameter('kernel.bundles');
 
-        if (!isset($registeredBundles['GrossumCoreBundle'])) {
-            throw new LogicException('GrossumStaticPageBundle required GrossumCoreBundle');
-        } elseif (!isset($registeredBundles['IvoryCKEditorBundle'])) {
-            throw new LogicException('GrossumStaticPageBundle required IvoryCKEditorBundle');
+        foreach ($this->requiredBundles as $requiredBundle) {
+            if (!isset($registeredBundles[$requiredBundle])) {
+                throw new LogicException('GrossumStaticPageBundle required ' . $requiredBundle);
+            }
         }
 
         $container->setParameter('grossum_static_page.entity.static_page.class', $config['class']['static_page']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('admin.yml');
         $loader->load('classes.yml');
         $loader->load('services.yml');
-
-        $this->registerDoctrineMapping($config);
-    }
-
-    /**
-     * @param array $config
-     */
-    public function registerDoctrineMapping(array $config)
-    {
-        $collector = DoctrineCollector::getInstance();
-
-//        $collector->addAssociation($config['class']['static_page'], 'mapManyToOne', array(
-//            'fieldName'     => 'root',
-//            'targetEntity'  => $config['class']['static_page'],
-//            'nullable'      => true,
-//            'joinColumns'   => array(
-//                array(
-//                    'referencedColumnName' => 'id',
-//                    'onDelete'             => 'CASCADE'
-//                ),
-//            ),
-//            'orphanRemoval' => false,
-//            'gedmo'         => [
-//                'treeRoot'
-//            ]
-//        ));
-//
-//        $collector->addAssociation($config['class']['static_page'], 'mapManyToOne', array(
-//            'fieldName'     => 'parent',
-//            'targetEntity'  => $config['class']['static_page'],
-//            'inversedBy'    => 'children',
-//            'joinColumns'   => array(
-//                array(
-//                    'referencedColumnName' => 'id',
-//                    'onDelete'             => 'CASCADE'
-//                ),
-//            ),
-//            'orphanRemoval' => false,
-//            'gedmo'         => [
-//                'parent'
-//            ]
-//        ));
-//
-//        $collector->addAssociation($config['class']['static_page'], 'mapOneToMany', array(
-//            'fieldName'     => 'children',
-//            'targetEntity'  => $config['class']['static_page'],
-//            'mappedBy'      => 'parent',
-//            'orphanRemoval' => false,
-//            'orderBy'       => [
-//                'lft' => 'ASC'
-//            ]
-//        ));
     }
 }
