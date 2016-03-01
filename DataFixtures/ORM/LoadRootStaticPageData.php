@@ -1,5 +1,7 @@
 <?php
 
+namespace Grossum\StaticPageBundle\DataFixtures\ORM;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
