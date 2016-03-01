@@ -9,7 +9,7 @@ use Gedmo\Tree\Strategy\ORM\Nested;
 
 use Grossum\StaticPageBundle\Entity\BaseStaticPage;
 
-abstract class StaticPageRepository extends NestedTreeRepository
+abstract class BaseStaticPageRepository extends NestedTreeRepository
 {
     /**
      * @return BaseStaticPage[]

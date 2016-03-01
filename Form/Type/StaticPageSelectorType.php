@@ -32,6 +32,7 @@ class StaticPageSelectorType extends AbstractType
         $that = $this;
 
         $resolver->setDefaults([
+            'btn_add'     => false,
             'choice_list' => function (Options $opts, $previousValue) use ($that) {
                 return new SimpleChoiceList($that->getChoices($opts));
             },
