@@ -11,3 +11,4 @@ grossum_static_page:
             position:        'Position'
             list_view_label: 'List'
             tree_view_label: 'Tree'
+            no_result:       'No result'

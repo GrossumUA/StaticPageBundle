@@ -51,9 +51,15 @@
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         <div class="box box-primary">
-            <div class="box-content dd">
-                {{ tree.navigate_child(root_static_page.__children, admin, 0) }}
-            </div>
+            {% if root_static_page.__children|length %}
+                <div class="box-content dd">
+                    {{ tree.navigate_child(root_static_page.__children, admin, 0) }}
+                </div>
+            {% else %}
+                <div class="callout callout-info">
+                    {{ 'grossum_static_page.admin.static_page.no_result'|trans({}, admin.translationDomain) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

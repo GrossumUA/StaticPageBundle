@@ -17,7 +17,7 @@ class GrossumStaticPageExtension extends Extension
      */
     protected $requiredBundles = [
         'GrossumCoreBundle',
-        'IvoryCKEditorBundle'
+        'IvoryCKEditorBundle',
     ];
 
     /**
