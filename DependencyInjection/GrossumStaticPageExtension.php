@@ -13,6 +13,14 @@ use Sonata\EasyExtendsBundle\Mapper\DoctrineCollector;
 class GrossumStaticPageExtension extends Extension
 {
     /**
+     * @var array
+     */
+    protected $requiredBundles = [
+        'GrossumCoreBundle',
+        'IvoryCKEditorBundle'
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -22,10 +30,10 @@ class GrossumStaticPageExtension extends Extension
 
         $registeredBundles = $container->getParameter('kernel.bundles');
 
-        if (!isset($registeredBundles['GrossumCoreBundle'])) {
-            throw new LogicException('GrossumStaticPageBundle required GrossumCoreBundle');
-        } elseif (!isset($registeredBundles['IvoryCKEditorBundle'])) {
-            throw new LogicException('GrossumStaticPageBundle required IvoryCKEditorBundle');
+        foreach ($this->requiredBundles as $requiredBundle) {
+            if (!isset($registeredBundles[$requiredBundle])) {
+                throw new LogicException('GrossumStaticPageBundle required ' . $requiredBundle);
+            }
         }
 
         $container->setParameter('grossum_static_page.entity.static_page.class', $config['class']['static_page']);
