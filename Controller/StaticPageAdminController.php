@@ -96,13 +96,19 @@ class StaticPageAdminController extends Controller
 
         // GedmoTree-extension make changes in database without transactions, but we want to have not broken tree,
         // that's why we manage transaction manually
-        $connection->beginTransaction();
+        try {
+            $connection->beginTransaction();
 
-        $this->getDoctrine()->getManager()->flush();
-        $staticPageRepo->reorder($rootStaticPage, 'position');
-        $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()->getManager()->flush();
+            $staticPageRepo->reorder($rootStaticPage, 'position');
+            $this->getDoctrine()->getManager()->flush();
 
-        $connection->commit();
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+
+            throw $e;
+        }
 
         return new JsonResponse(['result' => true]);
     }
