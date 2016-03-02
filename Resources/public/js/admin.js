@@ -19,7 +19,7 @@ $(function(){
                 cache: false,
                 success: function(response)
                 {
-                    console.log('[Grossum.StaticPage]', 'position changed');
+                    console.log('[Grossum.StaticPage]', 'node position changed');
                 }
             });
         });

@@ -17,23 +17,23 @@
 
 {% block meta_tags %}
     {{ parent() }}
-    <meta content='{{ grossum_static_page_tree_depth }}' name="grossum_static_page_tree_depth">
+    <meta name="grossum_static_page_tree_depth" content='{{ grossum_static_page_tree_depth }}'>
 {% endblock meta_tags %}
 
 {% import _self as tree %}
-{% macro navigate_child(collection, admin, depth) %}
+{% macro navigate_child(collection, admin) %}
     <ol class="dd-list">
         {% for element in collection %}
             <li class="dd-item dd3-item" data-id="{{ element.id }}" >
                 <div class="dd-handle dd3-handle"></div>
-                <div class="dd3-content"{% if depth < 2 %} data-treeview-toggled{% endif %}>
-                    <a class="sonata-tree__item__edit" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">[{{ element.id }}] - {{ element.title }}</a>
+                <div class="dd3-content">
+                    <a href="{{ admin.generateUrl('edit', {'id': element.id}) }}">[{{ element.id }}] - {{ element.title }}</a>
                     {% if element.enabled %}<span class="label label-success pull-right"><i class="fa fa-check"></i> {{ admin.trans('active', {}, admin.translationDomain) }}</span>{% endif %}
-                    {% if not element.enabled %}<span class="label label-danger pull-right"><i class="fa fa-times"> {{ admin.trans('disabled', {}, admin.translationDomain) }}</i></span>{% endif %}
+                    {% if not element.enabled %}<span class="label label-danger pull-right"><i class="fa fa-times"></i> {{ admin.trans('disabled', {}, admin.translationDomain) }}</span>{% endif %}
                 </div>
 
                 {% if element.__children|length %}
-                    {{ _self.navigate_child(element.__children, admin, depth + 1) }}
+                    {{ _self.navigate_child(element.__children, admin) }}
                 {% endif %}
             </li>
         {% endfor %}
@@ -53,7 +53,7 @@
         <div class="box box-primary">
             {% if root_static_page.__children|length %}
                 <div class="box-content dd">
-                    {{ tree.navigate_child(root_static_page.__children, admin, 0) }}
+                    {{ tree.navigate_child(root_static_page.__children, admin) }}
                 </div>
             {% else %}
                 <div class="callout callout-info">
