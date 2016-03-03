@@ -9,8 +9,7 @@ services:
             - GrossumStaticPageBundle:StaticPageAdmin
         calls:
             - [setTemplates, [{list: "GrossumStaticPageBundle:StaticPageAdmin:list.html.twig"}]]
-            - [setManager, ["@grossum_static_page.static_page.manager"]]
-
+            - [setStaticPageManager, ["@grossum_static_page.static_page.manager"]]
 
     grossum_static_page.admin.static_page_extension:
             class: %grossum_static_page.admin.static_page_extension.class%

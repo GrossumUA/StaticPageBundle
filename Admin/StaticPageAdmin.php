@@ -2,7 +2,6 @@
 
 namespace Grossum\StaticPageBundle\Admin;
 
-use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,12 +13,14 @@ use Doctrine\ORM\QueryBuilder;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
+use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
+
 class StaticPageAdmin extends Admin
 {
     /**
      * @var StaticPageManager
      */
-    protected $manager;
+    protected $staticPageManager;
 
     /**
      * {@inheritdoc}
@@ -71,7 +72,7 @@ class StaticPageAdmin extends Admin
                 [
                     'required' => true,
                     'label'    => 'grossum_static_page.admin.static_page.parent',
-                    'choices' => $this->manager->getAvailableParents($this->getSubject())
+                    'choices' => $this->staticPageManager->getAvailableParents($this->getSubject())
                 ]
             )
             ->add(
@@ -142,8 +143,8 @@ class StaticPageAdmin extends Admin
     /**
      * @param StaticPageManager $staticPageManager
      */
-    public function setManager(StaticPageManager $staticPageManager)
+    public function setStaticPageManager(StaticPageManager $staticPageManager)
     {
-        $this->manager = $staticPageManager;
+        $this->staticPageManager = $staticPageManager;
     }
 }

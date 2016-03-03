@@ -1,4 +1,6 @@
 $(function(){
+    "use strict";
+
     $('ol.sortable').on('sortupdate', function() {
         $.ajax({
             url: Routing.generate('admin_grossum_staticpage_staticpage_save-tree'),

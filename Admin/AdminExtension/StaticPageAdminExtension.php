@@ -50,5 +50,4 @@ class StaticPageAdminExtension extends AdminExtension
     {
         $this->staticPageManager->getRepository()->recover();
     }
-
 }

@@ -19,11 +19,7 @@ class StaticPageAdminController extends Controller
      */
     public function treeAction()
     {
-        $root = $this
-            ->get('grossum_static_page.static_page.manager')
-            ->getRepository()
-            ->find(1);
-
+        $root = $this->get('grossum_static_page.static_page.manager')->getRepository()->findRootStaticPage();
         $formView       = $this->admin->getDatagrid()->getForm()->createView();
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
@@ -51,7 +47,7 @@ class StaticPageAdminController extends Controller
 
         $root = $staticPageManager->getRepository()->findRootStaticPage();
 
-        foreach($newTree as $treeData) {
+        foreach ($newTree as $treeData) {
             if (isset($treeData['item_id']) && $treeData['item_id'] === StaticPage::ROOT) {
                 continue;
             }
@@ -75,7 +71,6 @@ class StaticPageAdminController extends Controller
         $verified = $staticPageManager->getRepository()->verify();
 
         if ($verified !== true) {
-            $this->getDoctrine()->getManager()->clear();
             return new JsonResponse(['result' => false]);
         }
         $staticPageManager->flush();
