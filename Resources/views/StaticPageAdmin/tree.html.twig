@@ -40,9 +40,9 @@
 
 {% macro navigate_child(collection, admin) %}
         {% for element in collection %}
-            <li class="sonata-ba-list-field" id="menuItem_{{ element.id }}" >
-                <div class="sonata-tree__item">
-                    <a class="sonata-tree__item__edit" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">{{ element.title }}</a>
+            <li class="dd-item mjs-nestedSortable-collapsed" id="menuItem_{{ element.id }}" >
+                <div class="dd-handle">
+                    <a class="sonata-link-identifier" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">{{ element.title }}</a>
                     {% if element.enabled %}<span class="label label-success pull-right"><i class="fa fa-check"></i> {{ admin.trans('active', {}, admin.translationDomain) }}</span>{% endif %}
                     {% if not element.enabled %}<span class="label label-danger pull-right"><i class="fa fa-times"> {{ admin.trans('disabled', {}, admin.translationDomain) }}</i></span>{% endif %}
                 </div>
@@ -69,7 +69,7 @@
         <div class="box box-primary">
             {% if root_static_page.children|length %}
                 <div class="box-content">
-                    <ol class="sortable sonata-tree sonata-tree--toggleable js-treeview sortable ui-sortable mjs-nestedSortable-branch mjs-nestedSortable-expanded">
+                    <ol class="sortable dd-list">
                         {{ _self.navigate_child(root_static_page.children, admin) }}
                     </ol>
                 </div>
