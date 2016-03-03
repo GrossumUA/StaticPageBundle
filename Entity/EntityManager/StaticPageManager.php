@@ -2,9 +2,11 @@
 
 namespace Grossum\StaticPageBundle\Entity\EntityManager;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Grossum\CoreBundle\Entity\EntityTrait\SaveUpdateInManagerTrait;
+use Grossum\StaticPageBundle\Entity\BaseStaticPage;
 use Grossum\StaticPageBundle\Entity\Repository\BaseStaticPageRepository;
 
 class StaticPageManager
@@ -46,5 +48,26 @@ class StaticPageManager
         }
 
         return $this->repository;
+    }
+
+    public function flush()
+    {
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @param BaseStaticPage $entity
+     * @return array
+     */
+    public function getAvailableParents($entity)
+    {
+        if ($entity == null) {
+            return $this->getRepository()->findAll();
+        }
+
+        $exceptThis = $this->getRepository()->getChildren($entity);
+        $exceptThis[] = $entity;
+
+        return $this->getRepository()->findAllExcept($exceptThis);
     }
 }

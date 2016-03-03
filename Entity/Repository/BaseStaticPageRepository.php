@@ -20,27 +20,6 @@ abstract class BaseStaticPageRepository extends NestedTreeRepository
     }
 
     /**
-     * Set as first child of a new parent - Tree hierarchy, it doesn't touch ORM relation.
-     *
-     * In ORM:
-     *     $node->setParent($newParent);
-     * It updates ORM relation only, doesn't touch Tree hierarchy.
-     *
-     * @param BaseStaticPage $staticPage
-     * @param BaseStaticPage $newParent
-     *
-     * @return void
-     */
-    public function setNewParent($staticPage, $newParent)
-    {
-        $meta     = $this->getClassMetadata();
-        $strategy = $this->listener->getStrategy($this->_em, $meta->name);
-        /* @var $strategy Nested */
-
-        $strategy->updateNode($this->_em, $staticPage, $newParent);
-    }
-
-    /**
      * @return BaseStaticPage
      * @throws NonUniqueResultException
      */
@@ -57,13 +36,14 @@ abstract class BaseStaticPageRepository extends NestedTreeRepository
     }
 
     /**
-     * @return int
+     * @param array $children
+     * @return array
      */
-    public function getMaxPosition()
+    public function findAllExcept(array $children)
     {
         $qb = $this->createQueryBuilder('static_page');
-        $qb->select('max(static_page.position)');
+        $qb->where($qb->expr()->notIn('static_page.title', $children));
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $qb->getQuery()->getResult();
     }
 }

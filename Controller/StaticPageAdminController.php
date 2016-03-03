@@ -8,8 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ConnectionException;
+use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
 
 use Application\Grossum\StaticPageBundle\Entity\StaticPage;
 
@@ -20,23 +19,17 @@ class StaticPageAdminController extends Controller
      */
     public function treeAction()
     {
-        $rootStaticPages = $this
+        $root = $this
             ->get('grossum_static_page.static_page.manager')
             ->getRepository()
-            ->childrenHierarchy();
+            ->find(1);
 
-        if (count($rootStaticPages) > 1) {
-            throw new \RuntimeException('Wrong number of roots elements. It must be one.');
-        }
-
-        $rootStaticPage = $rootStaticPages[0];
         $formView       = $this->admin->getDatagrid()->getForm()->createView();
-
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render('GrossumStaticPageBundle:StaticPageAdmin:tree.html.twig', array(
             'action'                         => 'tree',
-            'root_static_page'               => $rootStaticPage,
+            'root_static_page'               => $root,
             'form'                           => $formView,
             'csrf_token'                     => $this->getCsrfToken('sonata.batch'),
             'grossum_static_page_tree_depth' => $this->getParameter('grossum_static_page_tree_depth')
@@ -46,63 +39,46 @@ class StaticPageAdminController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws ConnectionException
      */
     public function saveTreeAction(Request $request)
     {
         $newTree = $request->request->get('tree');
 
-        $staticPageRepo = $this
-            ->get('grossum_static_page.static_page.manager')
-            ->getRepository();
+        /**
+         * @var StaticPageManager $staticPageManager
+         */
+        $staticPageManager = $this->get('grossum_static_page.static_page.manager');
 
-        // caching all pages from database
-        $staticPageRepo->findAll();
+        $root = $staticPageManager->getRepository()->findRootStaticPage();
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveArrayIterator($newTree),
-            \RecursiveIteratorIterator::LEAVES_ONLY
-        );
-
-        $rootStaticPage = $staticPageRepo->findRootStaticPage();
-        $lastStaticPage = $rootStaticPage;
-        $parents        = [
-            0 => $rootStaticPage
-        ];
-        $position       = 1;
-        $depth          = 1;
-        $lastDepth      = $depth;
-
-        foreach ($iterator as $staticPageId) {
-            $depth = round(($iterator->getDepth() - 1)/2);
-
-            if ($depth > $lastDepth) {
-                $parents[$depth] = $lastStaticPage;
+        foreach($newTree as $treeData) {
+            if (isset($treeData['item_id']) && $treeData['item_id'] === StaticPage::ROOT) {
+                continue;
             }
 
-            $staticPage = $staticPageRepo->find($staticPageId);
+            if (!isset($treeData['parent_id']) || !isset($treeData['id'])) {
+                continue;
+            }
 
-            $staticPage->setParent($parents[$depth]);
-            $staticPage->setPosition($position);
+            /**
+             * @var StaticPage $staticPage
+             */
+            $staticPage = $staticPageManager->getRepository()->find($treeData['id']);
+            $parentId = ($treeData['parent_id'] === StaticPage::ROOT) ? $root->getId() : $treeData['parent_id'];
+            $parentStaticPage = $staticPageManager->getRepository()->find($parentId);
 
-            $lastStaticPage = $staticPage;
-            $lastDepth      = $depth;
-
-            ++$position;
+            $staticPage->setParent($parentStaticPage)
+                ->setLft($treeData['left'])
+                ->setRgt($treeData['right']);
         }
 
-        $connection = $this->getDoctrine()->getConnection();
-        /* @var $connection Connection */
+        $verified = $staticPageManager->getRepository()->verify();
 
-        // GedmoTree-extension make changes in database without transactions, but we want to have not broken tree,
-        // that's why we manage transaction manually
-        $connection->beginTransaction();
-
-        $this->getDoctrine()->getManager()->flush();
-        $staticPageRepo->reorder($rootStaticPage, 'position');
-        $this->getDoctrine()->getManager()->flush();
-
-        $connection->commit();
+        if ($verified !== true) {
+            $this->getDoctrine()->getManager()->clear();
+            return new JsonResponse(['result' => false]);
+        }
+        $staticPageManager->flush();
 
         return new JsonResponse(['result' => true]);
     }

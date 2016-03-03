@@ -7,37 +7,53 @@
 
 {% block javascripts %}
     {{ parent() }}
+
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="{{ asset('bundles/grossumstaticpage/js/jquery.mjs.nestedSortable.js') }}"></script>
 
-    <script src="{{ asset('bundles/grossumstaticpage/js/jquery.nestable.js') }}"></script>
+    <script>
+        $(function() {
+            $('ol.sortable').nestedSortable({
+                forcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: {{ grossum_static_page_tree_depth }},
+                isTree: true,
+                expandOnHover: 700,
+                startCollapsed: false,
+                rootID: '{{ constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT') }}'
+            });
+        });
+    </script>
 
     <script src="{{ asset('bundles/grossumstaticpage/js/admin.js') }}"></script>
 {% endblock javascripts %}
 
-{% block meta_tags %}
-    {{ parent() }}
-    <meta content='{{ grossum_static_page_tree_depth }}' name="grossum_static_page_tree_depth">
-{% endblock meta_tags %}
-
-{% import _self as tree %}
-{% macro navigate_child(collection, admin, depth) %}
-    <ol class="dd-list">
+{% macro navigate_child(collection, admin) %}
         {% for element in collection %}
-            <li class="dd-item dd3-item" data-id="{{ element.id }}" >
-                <div class="dd-handle dd3-handle"></div>
-                <div class="dd3-content"{% if depth < 2 %} data-treeview-toggled{% endif %}>
-                    <a class="sonata-tree__item__edit" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">[{{ element.id }}] - {{ element.title }}</a>
+            <li class="sonata-ba-list-field" id="menuItem_{{ element.id }}" >
+                <div class="sonata-tree__item">
+                    <a class="sonata-tree__item__edit" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">{{ element.title }}</a>
                     {% if element.enabled %}<span class="label label-success pull-right"><i class="fa fa-check"></i> {{ admin.trans('active', {}, admin.translationDomain) }}</span>{% endif %}
                     {% if not element.enabled %}<span class="label label-danger pull-right"><i class="fa fa-times"> {{ admin.trans('disabled', {}, admin.translationDomain) }}</i></span>{% endif %}
                 </div>
 
-                {% if element.__children|length %}
-                    {{ _self.navigate_child(element.__children, admin, depth + 1) }}
+                {% if element.children|length %}
+                    <ol>
+                        {{ _self.navigate_child(element.children, admin) }}
+                    </ol>
                 {% endif %}
             </li>
         {% endfor %}
-    </ol>
 {% endmacro %}
 
 {% block tab_menu %}
@@ -51,9 +67,11 @@
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         <div class="box box-primary">
-            {% if root_static_page.__children|length %}
-                <div class="box-content dd">
-                    {{ tree.navigate_child(root_static_page.__children, admin, 0) }}
+            {% if root_static_page.children|length %}
+                <div class="box-content">
+                    <ol class="sortable sonata-tree sonata-tree--toggleable js-treeview sortable ui-sortable mjs-nestedSortable-branch mjs-nestedSortable-expanded">
+                        {{ _self.navigate_child(root_static_page.children, admin) }}
+                    </ol>
                 </div>
             {% else %}
                 <div class="callout callout-info">
