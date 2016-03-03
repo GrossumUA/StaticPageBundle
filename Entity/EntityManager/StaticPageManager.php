@@ -43,7 +43,7 @@ class StaticPageManager
      */
     public function getRepository()
     {
-        if ($this->repository === null) {
+        if (null === $this->repository) {
             $this->repository = $this->objectManager->getRepository($this->staticPageClass);
         }
 

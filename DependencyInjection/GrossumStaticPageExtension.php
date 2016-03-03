@@ -32,7 +32,7 @@ class GrossumStaticPageExtension extends Extension
 
         foreach ($this->requiredBundles as $requiredBundle) {
             if (!isset($registeredBundles[$requiredBundle])) {
-                throw new LogicException('GrossumStaticPageBundle required ' . $requiredBundle);
+                throw new LogicException(sprintf('GrossumStaticPageBundle required %s', $requiredBundle));
             }
         }
 
