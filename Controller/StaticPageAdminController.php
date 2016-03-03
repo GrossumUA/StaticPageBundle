@@ -11,8 +11,6 @@ use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
 
-use Application\Grossum\StaticPageBundle\Entity\StaticPage;
-
 class StaticPageAdminController extends Controller
 {
     /**
@@ -47,6 +45,7 @@ class StaticPageAdminController extends Controller
      * @param Request $request
      * @return JsonResponse
      * @throws ConnectionException
+     * @throws \Exception
      */
     public function saveTreeAction(Request $request)
     {
