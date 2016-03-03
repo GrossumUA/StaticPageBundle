@@ -61,7 +61,7 @@ class StaticPageManager
      */
     public function getAvailableParents($entity)
     {
-        if ($entity == null) {
+        if (!$entity->getId()) {
             return $this->getRepository()->findAll();
         }
 
