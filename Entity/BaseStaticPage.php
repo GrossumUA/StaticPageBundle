@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class BaseStaticPage
 {
+    const ROOT = 'root';
+
     /**
      * @var string
      */
@@ -329,24 +331,6 @@ abstract class BaseStaticPage
     public function getRoot()
     {
         return $this->root;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param int $position
-     * @return $this
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-        return $this;
     }
 
     /**

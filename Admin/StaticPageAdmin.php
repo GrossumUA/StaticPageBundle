@@ -10,22 +10,13 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\EntityManager;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
-use Grossum\StaticPageBundle\Entity\BaseStaticPage;
 use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
 
 class StaticPageAdmin extends Admin
 {
-    /**
-     * @var array
-     */
-    protected $formOptions = array(
-        'cascade_validation' => true,
-    );
-
     /**
      * @var StaticPageManager
      */
@@ -50,7 +41,6 @@ class StaticPageAdmin extends Admin
         $query = parent::createQuery($context);
 
         /* @var $query QueryBuilder */
-
         $query->andWhere($query->getRootAliases()[0] . '.parent IS NOT NULL');
 
         return $query;
@@ -78,10 +68,11 @@ class StaticPageAdmin extends Admin
             )
             ->add(
                 'parent',
-                'grossum_static_page_static_page_selector',
+                null,
                 [
-                    'model_manager' => $this->getModelManager(),
-                    'class'         => $this->getClass(),
+                    'required' => true,
+                    'label'    => 'grossum_static_page.admin.static_page.parent',
+                    'choices' => $this->staticPageManager->getAvailableParents($this->getSubject())
                 ]
             )
             ->add(
@@ -107,7 +98,9 @@ class StaticPageAdmin extends Admin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('enabled', null, ['label' => 'grossum_static_page.admin.static_page.enabled']);
+        $datagridMapper
+            ->add('enabled', null, ['label' => 'grossum_static_page.admin.static_page.enabled'])
+            ->add('title', null, ['label' => 'grossum_static_page.admin.static_page.title']);
     }
 
     /**
@@ -150,62 +143,8 @@ class StaticPageAdmin extends Admin
     /**
      * @param StaticPageManager $staticPageManager
      */
-    public function setManager(StaticPageManager $staticPageManager)
+    public function setStaticPageManager(StaticPageManager $staticPageManager)
     {
         $this->staticPageManager = $staticPageManager;
-    }
-
-    /**
-     * @param BaseStaticPage $object
-     * @return void
-     */
-    public function preRemove($object)
-    {
-        $this->fixTreeIfNeeded($object);
-    }
-
-    /**
-     * @param BaseStaticPage $object
-     * @return void
-     */
-    public function postPersist($object)
-    {
-        $this->fixTreeIfNeeded($object);
-    }
-
-    /**
-     * @param BaseStaticPage $object
-     * @return void
-     */
-    public function prePersist($object)
-    {
-        $maxPosition = $this->staticPageManager->getRepository()->getMaxPosition();
-
-        $object->setPosition($maxPosition + 1);
-    }
-
-    /**
-     * @param BaseStaticPage $object
-     * @return void
-     */
-    public function postUpdate($object)
-    {
-        $this->fixTreeIfNeeded($object);
-    }
-
-    /**
-     * @param BaseStaticPage $staticPage
-     * @return void
-     */
-    private function fixTreeIfNeeded(BaseStaticPage $staticPage)
-    {
-        $em = $this->modelManager->getEntityManager($staticPage);
-        /* @var $em EntityManager */
-
-        $repo = $this->staticPageManager->getRepository();
-
-        $repo->verify();
-        $repo->recover();
-        $em->flush();
     }
 }

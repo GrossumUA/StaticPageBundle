@@ -33,8 +33,6 @@ Grossum\StaticPageBundle\Entity\BaseStaticPage:
             type: integer
             gedmo:
                 - treeLevel
-        position:
-            type: integer
         createdAt:
             type: datetime
             column: created_at

@@ -1,26 +1,22 @@
 $(function(){
     "use strict";
 
-    var $tree = $('.dd.box-content').nestable(
+    $('ol.sortable').on('sortupdate', function() {
+        $.ajax({
+            url: Routing.generate('admin_grossum_staticpage_staticpage_save-tree'),
+            type: 'POST',
+            async:false,
+            data: {
+                tree: $('ol.sortable').nestedSortable('toArray', {startDepthCount: 0})
+            },
+            dataType: 'json',
+            cache: false,
+            success: function(response)
             {
-                maxDepth: $('meta[name="grossum_static_page_tree_depth"]').attr('content')
-            }
-        );
-
-    $tree
-        .on('change', function(e) {
-            $.ajax({
-                url: Routing.generate('admin_grossum_staticpage_staticpage_save-tree'),
-                type: 'POST',
-                data: {
-                    tree: $tree.nestable('serialize')
-                },
-                dataType: 'json',
-                cache: false,
-                success: function(response)
-                {
-                    console.log('[Grossum.StaticPage]', 'node position changed');
+                if (response.result == false) {
+                    alert('Error')
                 }
-            });
+            }
         });
+    });
 });
