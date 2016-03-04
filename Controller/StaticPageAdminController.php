@@ -38,41 +38,18 @@ class StaticPageAdminController extends Controller
      */
     public function saveTreeAction(Request $request)
     {
-        $newTree = $request->request->get('tree');
+        $tree = $request->request->get('tree');
 
         /**
          * @var StaticPageManager $staticPageManager
          */
         $staticPageManager = $this->get('grossum_static_page.static_page.manager');
-
-        $root = $staticPageManager->getRepository()->findRootStaticPage();
-
-        foreach ($newTree as $treeData) {
-            if (isset($treeData['item_id']) && $treeData['item_id'] === StaticPage::ROOT) {
-                continue;
-            }
-
-            if (!isset($treeData['parent_id']) || !isset($treeData['id'])) {
-                continue;
-            }
-
-            /**
-             * @var StaticPage $staticPage
-             */
-            $staticPage = $staticPageManager->getRepository()->find($treeData['id']);
-            $parentId = ($treeData['parent_id'] === StaticPage::ROOT) ? $root->getId() : $treeData['parent_id'];
-            $parentStaticPage = $staticPageManager->getRepository()->find($parentId);
-
-            $staticPage->setParent($parentStaticPage)
-                ->setLft($treeData['left'])
-                ->setRgt($treeData['right']);
-        }
-
-        $verified = $staticPageManager->getRepository()->verify();
+        $verified = $staticPageManager->updateAndVerifyTree($tree);
 
         if ($verified !== true) {
             return new JsonResponse(['result' => false]);
         }
+
         $staticPageManager->flush();
 
         return new JsonResponse(['result' => true]);
