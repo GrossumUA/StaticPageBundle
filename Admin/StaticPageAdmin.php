@@ -7,9 +7,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
-use Doctrine\ORM\QueryBuilder;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
@@ -30,20 +27,6 @@ class StaticPageAdmin extends Admin
         $routes
             ->add('tree', 'tree')
             ->add('save-tree', 'save-tree', [], [], ['expose' => true]);
-    }
-
-    /**
-     * @param string $context
-     * @return QueryBuilder|ProxyQueryInterface
-     */
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery($context);
-
-        /* @var $query QueryBuilder */
-        $query->andWhere($query->getRootAliases()[0] . '.parent IS NOT NULL');
-
-        return $query;
     }
 
     /**
