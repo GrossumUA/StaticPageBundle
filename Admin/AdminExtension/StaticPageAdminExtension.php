@@ -2,9 +2,12 @@
 
 namespace Grossum\StaticPageBundle\Admin\AdminExtension;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+use Grossum\StaticPageBundle\Entity\BaseStaticPage;
 use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
 
 class StaticPageAdminExtension extends AdminExtension
@@ -36,6 +39,18 @@ class StaticPageAdminExtension extends AdminExtension
     public function prePersist(AdminInterface $admin, $object)
     {
         $this->recoverTree();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param BaseStaticPage $object
+     */
+    public function alterObject(AdminInterface $admin, $object)
+    {
+        // Prevent root object editing
+        if ($object->getParent() === null) {
+            throw new AccessDeniedException();
+        }
     }
 
     /**

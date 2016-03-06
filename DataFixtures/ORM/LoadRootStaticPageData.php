@@ -32,8 +32,8 @@ class LoadRootStaticPageData implements FixtureInterface, ContainerAwareInterfac
     {
         $entityClass = $this->container->getParameter('grossum_static_page.entity.static_page.class');
 
-        $staticPage = new $entityClass();
         /* @var $staticPage BaseStaticPage */
+        $staticPage = new $entityClass();
 
         $staticPage->setTitle('==ROOT==');
         $staticPage->setBody('==ROOT==');
