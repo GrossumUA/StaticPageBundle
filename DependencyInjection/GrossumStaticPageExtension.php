@@ -8,8 +8,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-use Sonata\EasyExtendsBundle\Mapper\DoctrineCollector;
-
 class GrossumStaticPageExtension extends Extension
 {
     /**
@@ -17,7 +15,7 @@ class GrossumStaticPageExtension extends Extension
      */
     protected $requiredBundles = [
         'GrossumCoreBundle',
-        'IvoryCKEditorBundle',
+        'IvoryCKEditorBundle'
     ];
 
     /**

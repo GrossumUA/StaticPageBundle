@@ -10,26 +10,28 @@ use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
 
-use Application\Grossum\StaticPageBundle\Entity\StaticPage;
-
 class StaticPageAdminController extends Controller
 {
+    const TREE_ACTION = 'tree';
     /**
      * @return Response
      */
     public function treeAction()
     {
         $root = $this->get('grossum_static_page.static_page.manager')->getRepository()->findRootStaticPage();
-        $formView       = $this->admin->getDatagrid()->getForm()->createView();
+        $formView = $this->admin->getDatagrid()->getForm()->createView();
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->render('GrossumStaticPageBundle:StaticPageAdmin:tree.html.twig', array(
-            'action'                         => 'tree',
-            'root_static_page'               => $root,
-            'form'                           => $formView,
-            'csrf_token'                     => $this->getCsrfToken('sonata.batch'),
-            'grossum_static_page_tree_depth' => $this->getParameter('grossum_static_page_tree_depth')
-        ));
+        return $this->render(
+            'GrossumStaticPageBundle:StaticPageAdmin:tree.html.twig',
+            [
+                'action' => self::TREE_ACTION,
+                'root_static_page' => $root,
+                'form' => $formView,
+                'csrf_token' => $this->getCsrfToken('sonata.batch'),
+                'grossum_static_page_tree_depth' => $this->getParameter('grossum_static_page_tree_depth'),
+            ]
+        );
     }
 
     /**
