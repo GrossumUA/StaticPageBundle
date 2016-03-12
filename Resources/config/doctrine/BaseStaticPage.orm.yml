@@ -1,5 +1,8 @@
 Grossum\StaticPageBundle\Entity\BaseStaticPage:
     type: mappedSuperclass
+    gedmo:
+        tree:
+            type: nested
     fields:
         title:
             type: string
@@ -18,8 +21,18 @@ Grossum\StaticPageBundle\Entity\BaseStaticPage:
             nullable: true
         enabled:
             type: boolean
-        position:
+        lft:
             type: integer
+            gedmo:
+                - treeLeft
+        rgt:
+            type: integer
+            gedmo:
+                - treeRight
+        lvl:
+            type: integer
+            gedmo:
+                - treeLevel
         createdAt:
             type: datetime
             column: created_at

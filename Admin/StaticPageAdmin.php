@@ -6,11 +6,29 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
+use Grossum\StaticPageBundle\Entity\EntityManager\StaticPageManager;
+
 class StaticPageAdmin extends Admin
 {
+    /**
+     * @var StaticPageManager
+     */
+    protected $staticPageManager;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureRoutes(RouteCollection $routes)
+    {
+        $routes
+            ->add('tree', 'tree')
+            ->add('save-tree', 'save-tree', [], [], ['expose' => true]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +53,9 @@ class StaticPageAdmin extends Admin
                 'parent',
                 null,
                 [
-                    'label' => 'grossum_static_page.admin.static_page.parent',
+                    'required' => true,
+                    'label'    => 'grossum_static_page.admin.static_page.parent',
+                    'choices' => $this->staticPageManager->getAvailableParents($this->getSubject())
                 ]
             )
             ->add(
@@ -53,13 +73,6 @@ class StaticPageAdmin extends Admin
                     'required' => false,
                     'label'    => 'grossum_static_page.admin.static_page.body',
                 ]
-            )
-            ->add(
-                'position',
-                null,
-                [
-                    'label' => 'grossum_static_page.admin.static_page.position',
-                ]
             );
     }
 
@@ -68,7 +81,9 @@ class StaticPageAdmin extends Admin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('enabled', null, ['label' => 'grossum_static_page.admin.static_page.enabled']);
+        $datagridMapper
+            ->add('enabled', null, ['label' => 'grossum_static_page.admin.static_page.enabled'])
+            ->add('title', null, ['label' => 'grossum_static_page.admin.static_page.title']);
     }
 
     /**
@@ -100,21 +115,19 @@ class StaticPageAdmin extends Admin
                 ]
             )
             ->add(
-                'position',
+                'enabled',
                 null,
                 [
-                    'label' => 'grossum_static_page.admin.static_page.position',
-                ]
-            )
-            ->add(
-                '_action',
-                'actions',
-                [
-                    'actions' => [
-                        'edit'   => [],
-                        'delete' => []
-                    ],
+                    'label' => 'grossum_static_page.admin.static_page.enabled',
                 ]
             );
+    }
+
+    /**
+     * @param StaticPageManager $staticPageManager
+     */
+    public function setStaticPageManager(StaticPageManager $staticPageManager)
+    {
+        $this->staticPageManager = $staticPageManager;
     }
 }

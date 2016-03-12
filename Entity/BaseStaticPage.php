@@ -2,13 +2,12 @@
 
 namespace Grossum\StaticPageBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class BaseStaticPage
 {
-    const POSITION_DEFAULT = 1;
+    const ROOT = 'root';
 
     /**
      * @var string
@@ -31,11 +30,6 @@ abstract class BaseStaticPage
     protected $enabled;
 
     /**
-     * @var integer
-     */
-    protected $position;
-
-    /**
      * @var \DateTime
      */
     protected $createdAt;
@@ -55,11 +49,41 @@ abstract class BaseStaticPage
      */
     protected $parent;
 
+    /**
+     * @var BaseStaticPage
+     */
+    protected $root;
+
+    /**
+     * @var integer
+     */
+    protected $lft;
+
+    /**
+     * @var integer
+     */
+    protected $rgt;
+
+    /**
+     * @var integer
+     */
+    protected $lvl;
+
+    /**
+     * @var integer
+     */
+    protected $position;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->position = static::POSITION_DEFAULT;
+        $this->enabled  = true;
     }
+
+    /**
+     * @return integer
+     */
+    abstract public function getId();
 
     /**
      * @param string $title
@@ -139,26 +163,6 @@ abstract class BaseStaticPage
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * @param integer $position
-     *
-     * @return $this
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPosition()
-    {
-        return $this->position;
     }
 
     /**
@@ -247,6 +251,86 @@ abstract class BaseStaticPage
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param integer $lft
+     *
+     * @return $this
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * @param integer $rgt
+     *
+     * @return $this
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * @param integer $lvl
+     *
+     * @return $this
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * @param BaseStaticPage $root
+     *
+     * @return $this
+     */
+    public function setRoot(BaseStaticPage $root = null)
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    /**
+     * @return BaseStaticPage
+     */
+    public function getRoot()
+    {
+        return $this->root;
     }
 
     /**

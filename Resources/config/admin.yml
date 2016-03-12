@@ -6,4 +6,14 @@ services:
         arguments:
             - ~
             - %grossum_static_page.entity.static_page.class%
-            - ~
+            - GrossumStaticPageBundle:StaticPageAdmin
+        calls:
+            - [setTemplates, [{list: "GrossumStaticPageBundle:StaticPageAdmin:list.html.twig"}]]
+            - [setStaticPageManager, ["@grossum_static_page.static_page.manager"]]
+
+    grossum_static_page.admin.static_page_extension:
+            class: %grossum_static_page.admin.static_page_extension.class%
+            arguments:
+                - @grossum_static_page.static_page.manager
+            tags:
+                - { name: sonata.admin.extension, target: grossum_static_page.admin.static_page }

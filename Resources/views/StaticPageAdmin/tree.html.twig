@@ -1,0 +1,83 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/grossumstaticpage/css/admin.css') }}">
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="{{ asset('bundles/grossumstaticpage/js/jquery.mjs.nestedSortable.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('ol.sortable').nestedSortable({
+                forcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: {{ grossum_static_page_tree_depth }},
+                isTree: true,
+                expandOnHover: 700,
+                startCollapsed: false,
+                rootID: '{{ constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT') }}'
+            });
+        });
+    </script>
+
+    <script src="{{ asset('bundles/grossumstaticpage/js/admin.js') }}"></script>
+{% endblock javascripts %}
+
+{% macro navigate_child(collection, admin) %}
+        {% for element in collection %}
+            <li class="dd-item mjs-nestedSortable-collapsed" id="menuItem_{{ element.id }}" >
+                <div class="dd-handle">
+                    <a class="sonata-link-identifier" href="{{ admin.generateUrl('edit', {'id': element.id}) }}">{{ element.title }}</a>
+                    {% if element.enabled %}<span class="label label-success pull-right"><i class="fa fa-check"></i> {{ admin.trans('active', {}, admin.translationDomain) }}</span>{% endif %}
+                    {% if not element.enabled %}<span class="label label-danger pull-right"><i class="fa fa-times"> {{ admin.trans('disabled', {}, admin.translationDomain) }}</i></span>{% endif %}
+                </div>
+
+                {% if element.children|length %}
+                    <ol>
+                        {{ _self.navigate_child(element.children, admin) }}
+                    </ol>
+                {% endif %}
+            </li>
+        {% endfor %}
+{% endmacro %}
+
+{% block tab_menu %}
+    {% include 'GrossumStaticPageBundle:StaticPageAdmin:list_tab_menu.html.twig' with {
+        'mode':   'tree',
+        'action': action,
+        'admin':  admin,
+    } only %}
+{% endblock %}
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary">
+            {% if root_static_page.children|length %}
+                <div class="box-content">
+                    <ol class="sortable dd-list">
+                        {{ _self.navigate_child(root_static_page.children, admin) }}
+                    </ol>
+                </div>
+            {% else %}
+                <div class="callout callout-info">
+                    {{ 'grossum_static_page.admin.static_page.no_result'|trans({}, admin.translationDomain) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
