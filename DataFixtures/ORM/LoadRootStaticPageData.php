@@ -35,8 +35,9 @@ class LoadRootStaticPageData implements FixtureInterface, ContainerAwareInterfac
         /* @var $staticPage BaseStaticPage */
         $staticPage = new $entityClass();
 
-        $staticPage->setTitle('==ROOT==');
-        $staticPage->setBody('==ROOT==');
+        $staticPage->setTitle(BaseStaticPage::ROOT);
+        $staticPage->setBody(BaseStaticPage::ROOT);
+
         $manager->persist($staticPage);
         $manager->flush();
     }
