@@ -94,18 +94,18 @@ class StaticPageManager
                 continue;
             }
 
-            if (!isset($treeData['parent_id']) || !isset($treeData['id'])) {
+            if (!isset($treeData['parent_id'], $treeData['id'])) {
                 continue;
             }
 
-            /**
-             * @var BaseStaticPage $staticPage
-             */
+            /** @var BaseStaticPage $staticPage */
             $staticPage = $this->getRepository()->find($treeData['id']);
+
             $parentId = ($treeData['parent_id'] === BaseStaticPage::ROOT) ? $root->getId() : $treeData['parent_id'];
             $parentStaticPage = $this->getRepository()->find($parentId);
 
-            $staticPage->setParent($parentStaticPage)
+            $staticPage
+                ->setParent($parentStaticPage)
                 ->setLft($treeData['left'])
                 ->setRgt($treeData['right']);
         }
