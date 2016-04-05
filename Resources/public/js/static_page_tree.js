@@ -1,9 +1,9 @@
-$(function()
+"use strict";
+
+var grossumStaticPageAdmin = grossumStaticPageAdmin || {};
+
+grossumStaticPageAdmin.tree = function(context)
 {
-    "use strict";
-
-    var $head = $(document.head);
-
     $('ol.sortable')
         .nestedSortable({
             forcePlaceholderSize: true,
@@ -16,16 +16,16 @@ $(function()
             tabSize: 25,
             tolerance: 'pointer',
             toleranceElement: '> div',
-            maxLevels: $head.find('meta[name="grossum_static_page.static_page.tree_depth"]').attr('content'),
+            maxLevels: context.tree_depth,
             isTree: true,
             expandOnHover: 700,
             startCollapsed: false,
-            rootID: $head.find('meta[name="grossum_static_page.entity.static_page.constant.root_id"]').attr('content')
+            rootID: context.root_id
         })
         .on('sortupdate', function()
         {
             $.ajax({
-                url: $head.find('meta[name="grossum_static_page.route.save_tree"]').attr('content'),
+                url: context.save_tree_url,
                 type: 'POST',
                 async:false,
                 data: {
@@ -36,9 +36,9 @@ $(function()
                 success: function(response)
                 {
                     if (response.result == false) {
-                        alert('Error')
+                        alert('Error');
                     }
                 }
             });
         });
-});
+};

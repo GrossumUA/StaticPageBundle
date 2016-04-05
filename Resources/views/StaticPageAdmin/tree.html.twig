@@ -5,20 +5,21 @@
     <link rel="stylesheet" href="{{ asset('bundles/grossumstaticpage/css/admin.css') }}">
 {% endblock stylesheets %}
 
-{% block meta_tags %}
-    {{ parent() }}
-
-    <meta name="grossum_static_page.route.save_tree" content='{{ path('admin_grossum_staticpage_staticpage_save-tree') }}'>
-    <meta name="grossum_static_page.static_page.tree_depth" content='{{ grossum_static_page_tree_depth }}'>
-    <meta name="grossum_static_page.entity.static_page.constant.root_id" content='{{ constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT') }}'>
-{% endblock meta_tags %}
-
 {% block javascripts %}
     {{ parent() }}
 
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
     <script src="{{ asset('bundles/grossumstaticpage/js/jquery.mjs.nestedSortable.js') }}"></script>
     <script src="{{ asset('bundles/grossumstaticpage/js/static_page_tree.js') }}"></script>
+    <script>
+        $(function() {
+            grossumStaticPageAdmin.tree({{ {
+                'tree_depth':    grossum_static_page_tree_depth,
+                'root_id':       constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT'),
+                'save_tree_url': path('admin_grossum_staticpage_staticpage_save-tree')
+            }|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});
+        });
+    </script>
 {% endblock javascripts %}
 
 {% macro navigate_child(collection, admin) %}
