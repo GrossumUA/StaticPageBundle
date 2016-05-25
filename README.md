@@ -1,3 +1,8 @@
+Static Page Bundle
+==================
+
+[![Latest Stable Version](https://poser.pugx.org/grossum/static-page-bundle/v/stable)](https://packagist.org/packages/grossum/static-page-bundle) [![Total Downloads](https://poser.pugx.org/grossum/static-page-bundle/downloads)](https://packagist.org/packages/grossum/static-page-bundle) [![Latest Unstable Version](https://poser.pugx.org/grossum/static-page-bundle/v/unstable)](https://packagist.org/packages/grossum/static-page-bundle) [![License](https://poser.pugx.org/grossum/static-page-bundle/license)](https://packagist.org/packages/grossum/static-page-bundle)
+
 Installation
 ============
 
