@@ -8,34 +8,18 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
     <script src="{{ asset('bundles/grossumstaticpage/js/jquery.mjs.nestedSortable.js') }}"></script>
-
+    <script src="{{ asset('bundles/grossumstaticpage/js/static_page_tree.js') }}"></script>
     <script>
         $(function() {
-            $('ol.sortable').nestedSortable({
-                forcePlaceholderSize: true,
-                handle: 'div',
-                helper: 'clone',
-                items: 'li',
-                opacity: .6,
-                placeholder: 'placeholder',
-                revert: 250,
-                tabSize: 25,
-                tolerance: 'pointer',
-                toleranceElement: '> div',
-                maxLevels: {{ grossum_static_page_tree_depth }},
-                isTree: true,
-                expandOnHover: 700,
-                startCollapsed: false,
-                rootID: '{{ constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT') }}'
-            });
+            grossumStaticPageAdmin.tree({{ {
+                'tree_depth':    grossum_static_page_tree_depth,
+                'root_id':       constant('Grossum\\StaticPageBundle\\Entity\\BaseStaticPage::ROOT'),
+                'save_tree_url': path('admin_grossum_staticpage_staticpage_save-tree')
+            }|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});
         });
     </script>
-
-    <script src="{{ asset('bundles/grossumstaticpage/js/admin.js') }}"></script>
 {% endblock javascripts %}
 
 {% macro navigate_child(collection, admin) %}

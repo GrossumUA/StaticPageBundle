@@ -14,6 +14,7 @@ Grossum\StaticPageBundle\Entity\BaseStaticPage:
                 slug:
                     separator: -
                     style: lower
+                    updatable: false
                     fields:
                         - title
         body:
